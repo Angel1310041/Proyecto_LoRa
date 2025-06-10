@@ -1,0 +1,956 @@
+/* General */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    background-color: #f2f2f2;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    scroll-behavior: smooth;
+    text-align: center;
+}
+
+/* Menú hamburguesa */
+#Menu_Desplegable {
+    position: fixed;
+    top: 35px;
+    left: 20px;
+    width: 35px;
+    height: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    z-index: 100;
+}
+
+.line {
+    width: 100%;
+    height: 4px;
+    background-color: #fff;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+/* Header */
+.header {
+    background-color: #ff9800;
+    color: #fff;
+    text-align: center;
+    padding: 40px 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%; 
+    z-index: 98;
+    max-width: 200%; 
+    margin: 7; 
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 1.9em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header h1 img {
+    margin-left: 10px;
+    height: 26px;
+}
+
+/* Menú lateral */
+.menuu {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 250px;
+    height: 100%;
+    background-color: #ff6f00;
+    padding-top: 70px;
+    transition: left 0.3s ease-in-out;
+    z-index: 99;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.15);
+}
+
+.menuu.activo {
+    left: 0;
+}
+
+.submenu {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    align-items: flex-start;
+}
+
+.submenu a {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    padding: 10px 15px;
+    text-decoration: none;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: background 0.25s ease;
+}
+
+.submenu a:hover {
+    background-color: #ef6c00;
+}
+
+.submenu a img,
+.submenu a i {
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+}
+
+/* Loader */
+    /* Loader - Pantalla de carga */
+    #pantalla-carga {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.9); /* Fondo semitransparente */
+    z-index: 9999;
+    display: flex;
+    align-items: center; /* Centrado vertical */
+    justify-content: center; /* Centrado horizontal */
+    margin: 0;
+    padding: 0;
+    }
+
+    .loader-bolas {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    margin: auto; /* Centrado adicional (redundante pero seguro) */
+    }
+
+.loader-bolas::before,
+.loader-bolas::after {
+    content: '';
+    box-sizing: border-box;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 8px solid #00aaff;
+    border-color: #00aaff transparent transparent transparent;
+    animation: rotateBolas 1.2s linear infinite;
+    }
+
+    .loader-bolas::after {
+    animation-delay: 0.6s; /* Retraso para el segundo círculo */
+    }
+
+    @keyframes rotateBolas {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+    }
+
+/* Apartados principales */
+#apartado-pruebas,
+#apartado-parametros,
+#apartado-inicio {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+    margin-top: 100px;
+    margin-bottom: 30px;
+    max-width: 700px;
+    width: 90%;
+    text-align: center;
+}
+
+#apartado-pruebas h2,
+#apartado-parametros h2,
+#apartado-inicio h2 {
+    color: #ff6f00;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+    border-bottom: 2px solid #ffcc80;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+/* Botones */
+button,
+input[type="submit"] {
+    background-color: #ff9800;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button:hover,
+input[type="submit"]:hover {
+    background-color: #f57c00;
+}
+
+/* General */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    background-color: #f2f2f2;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    scroll-behavior: smooth;
+    text-align: center;
+}
+
+/* Menú hamburguesa */
+#Menu_Desplegable {
+    position: fixed;
+    top: 35px;
+    left: 20px;
+    width: 35px;
+    height: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    z-index: 100;
+}
+
+.line {
+    width: 100%;
+    height: 4px;
+    background-color: #fff;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+/* Header */
+.header {
+    background-color: #ff9800;
+    color: #fff;
+    text-align: center;
+    padding: 19px 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%; 
+    z-index: 98;
+    max-width: 200%; 
+    margin: 3; 
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 1.9em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header h1 img {
+    margin-left: 10px;
+    height: 26px;
+}
+
+/* Menú lateral */
+.menuu {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 250px;
+    height: 100%;
+    background-color: #ff6f00;
+    padding-top: 70px;
+    transition: left 0.3s ease-in-out;
+    z-index: 99;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.15);
+}
+
+.menuu.activo {
+    left: 0;
+}
+
+.submenu {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    align-items: flex-start;
+}
+
+.submenu a {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    padding: 10px 15px;
+    text-decoration: none;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: background 0.25s ease;
+}
+
+.submenu a:hover {
+    background-color: #ef6c00;
+}
+
+.submenu a img,
+.submenu a i {
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+}
+
+/* Loader */
+    /* Loader - Pantalla de carga */
+    #pantalla-carga {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.9); /* Fondo semitransparente */
+    z-index: 9999;
+    display: flex;
+    align-items: center; /* Centrado vertical */
+    justify-content: center; /* Centrado horizontal */
+    margin: 0;
+    padding: 0;
+    }
+
+    .loader-bolas {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    margin: auto; /* Centrado adicional (redundante pero seguro) */
+    }
+
+.loader-bolas::before,
+.loader-bolas::after {
+    content: '';
+    box-sizing: border-box;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 8px solid #00aaff;
+    border-color: #00aaff transparent transparent transparent;
+    animation: rotateBolas 1.2s linear infinite;
+    }
+
+    .loader-bolas::after {
+    animation-delay: 0.6s; /* Retraso para el segundo círculo */
+    }
+
+    @keyframes rotateBolas {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+    }
+
+/* Apartados principales */
+#apartado-pruebas,
+#apartado-parametros,
+#apartado-inicio {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+    margin-top: 100px;
+    margin-bottom: 30px;
+    max-width: 700px;
+    width: 90%;
+    text-align: center;
+}
+
+#apartado-pruebas h2,
+#apartado-parametros h2,
+#apartado-inicio h2 {
+    color: #ff6f00;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+    border-bottom: 2px solid #ffcc80;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+/* Botones */
+button,
+input[type="submit"] {
+    background-color: #ff9800;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button:hover,
+input[type="submit"]:hover {
+    background-color: #f57c00;
+}
+
+/* General */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    background-color: #f2f2f2;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    scroll-behavior: smooth;
+    text-align: center;
+}
+
+/* Menú hamburguesa */
+#Menu_Desplegable {
+    position: fixed;
+    top: 35px;
+    left: 20px;
+    width: 35px;
+    height: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    z-index: 100;
+}
+
+.line {
+    width: 100%;
+    height: 4px;
+    background-color: #fff;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+/* Header */
+.header {
+    background-color: #ff9800;
+    color: #fff;
+    text-align: center;
+    padding: 19px 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%; 
+    z-index: 98;
+    max-width: 200%; 
+    margin: 3; 
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 1.9em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header h1 img {
+  width: 60px;    /* Ancho fijo en píxeles */
+  height: 100%;    /* La altura se ajusta proporcionalmente */
+  max-height: 75%;
+  margin-right: 35px;
+  vertical-align: middle;
+}
+
+/* Menú lateral */
+.menuu {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 250px;
+    height: 100%;
+    background-color: #ff6f00;
+    padding-top: 70px;
+    transition: left 0.3s ease-in-out;
+    z-index: 99;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.15);
+}
+
+.menuu.activo {
+    left: 0;
+}
+
+.submenu {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    align-items: flex-start;
+}
+
+.submenu a {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    padding: 10px 15px;
+    text-decoration: none;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: background 0.25s ease;
+}
+
+.submenu a:hover {
+    background-color: #ef6c00;
+}
+
+.submenu a img,
+.submenu a i {
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+}
+
+/* Loader */
+    /* Loader - Pantalla de carga */
+    #pantalla-carga {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.9); /* Fondo semitransparente */
+    z-index: 9999;
+    display: flex;
+    align-items: center; /* Centrado vertical */
+    justify-content: center; /* Centrado horizontal */
+    margin: 0;
+    padding: 0;
+    }
+
+    .loader-bolas {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    margin: auto; /* Centrado adicional (redundante pero seguro) */
+    }
+
+.loader-bolas::before,
+.loader-bolas::after {
+    content: '';
+    box-sizing: border-box;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 8px solid #00aaff;
+    border-color: #00aaff transparent transparent transparent;
+    animation: rotateBolas 1.2s linear infinite;
+    }
+
+    .loader-bolas::after {
+    animation-delay: 0.6s; /* Retraso para el segundo círculo */
+    }
+
+    @keyframes rotateBolas {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+    }
+
+/* Apartados principales */
+#apartado-pruebas,
+#apartado-parametros,
+#apartado-inicio {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+    margin-top: 100px;
+    margin-bottom: 30px;
+    max-width: 700px;
+    width: 90%;
+    text-align: center;
+}
+
+#apartado-pruebas h2,
+#apartado-parametros h2,
+#apartado-inicio h2 {
+    color: #ff6f00;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+    border-bottom: 2px solid #ffcc80;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+/* Botones */
+button,
+input[type="submit"] {
+    background-color: #ff9800;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button:hover,
+input[type="submit"]:hover {
+    background-color: #f57c00;
+}
+
+.logo {
+  width: 60px;    /* Ancho fijo en píxeles */
+  height: 100%;    /* La altura se ajusta proporcionalmente */
+  max-height: 75%;
+  margin-right: 35px;
+  vertical-align: middle;
+}
+
+button img {
+  width: 10%;      /* % del ancho del botón */
+  height: 80%;    /* Mantiene la proporción */
+  max-height:54px; /* Límite máximo (opcional) */
+  margin-right: 35px;
+  vertical-align: middle;
+}
+
+/* Lista de pantallas */
+#lista-pantallas {
+    list-style: none;
+    padding: 0;
+}
+
+#lista-pantallas li {
+    margin-bottom: 15px;
+}
+
+#lista-pantallas li button {
+    background-color: #fbc02d;
+    color: #333;
+}
+
+#lista-pantallas li button:hover {
+    background-color: #f9a825;
+    color: #000;
+}
+
+/* Formulario apartado parámetros */
+#apartado-parametros form,
+#apartado-pruebas form {
+    text-align: center;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fafafa;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+#apartado-parametros label,
+#apartado-pruebas label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #444;
+    text-align: center; /* Puedes quitar esto si quieres centrar también los labels */
+}
+
+#apartado-parametros input[type="text"],
+#apartado-pruebas input[type="text"],
+#apartado-parametros select,
+#apartado-pruebas select {
+    width: 100%;
+    padding: 12px 14px;
+    margin-bottom: 20px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#apartado-parametros input[type="text"]:focus,
+#apartado-pruebas input[type="text"]:focus,
+#apartado-parametros select:focus,
+#apartado-pruebas select:focus {
+    border-color: #ffa726;
+    box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.2);
+    outline: none;
+}
+
+#apartado-parametros button,
+#apartado-pruebas button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    font-size: 1.05rem;
+    background-color: #ff9800;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#apartado-parametros button:hover,
+#apartado-pruebas button:hover {
+    background-color: #fb8c00;
+}
+#apartado-inicio {
+    display: block;
+    margin: 130px auto 0 auto;
+    max-width: 400px;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.10);
+    padding: 36px 28px 28px 28px;
+    text-align: center;
+}
+
+.resumen-info {
+    font-size: 1.8rem;
+    color: #333;
+    text-align: center;
+    margin-bottom: 18px;
+}
+/* Lista de pantallas */
+#lista-pantallas {
+    list-style: none;
+    padding: 0;
+}
+
+#lista-pantallas li {
+    margin-bottom: 15px;
+}
+
+#lista-pantallas li button {
+    background-color: #fbc02d;
+    color: #333;
+}
+
+#lista-pantallas li button:hover {
+    background-color: #f9a825;
+    color: #000;
+}
+
+/* Formulario apartado parámetros */
+#apartado-parametros form,
+#apartado-pruebas form {
+    text-align: center;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fafafa;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+#apartado-parametros label,
+#apartado-pruebas label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #444;
+    text-align: center; /* Puedes quitar esto si quieres centrar también los labels */
+}
+
+#apartado-parametros input[type="text"],
+#apartado-pruebas input[type="text"],
+#apartado-parametros select,
+#apartado-pruebas select {
+    width: 100%;
+    padding: 12px 14px;
+    margin-bottom: 20px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#apartado-parametros input[type="text"]:focus,
+#apartado-pruebas input[type="text"]:focus,
+#apartado-parametros select:focus,
+#apartado-pruebas select:focus {
+    border-color: #ffa726;
+    box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.2);
+    outline: none;
+}
+
+#apartado-parametros button,
+#apartado-pruebas button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    font-size: 1.05rem;
+    background-color: #ff9800;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#apartado-parametros button:hover,
+#apartado-pruebas button:hover {
+    background-color: #fb8c00;
+}
+#apartado-inicio {
+    display: block;
+    margin: 130px auto 0 auto;
+    max-width: 400px;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.10);
+    padding: 36px 28px 28px 28px;
+    text-align: center;
+}
+
+.resumen-info {
+    font-size: 1.8rem;
+    color: #333;
+    text-align: center;
+    margin-bottom: 18px;
+}
+
+/* Lista de pantallas */
+#lista-pantallas {
+    list-style: none;
+    padding: 0;
+}
+
+#lista-pantallas li {
+    margin-bottom: 15px;
+}
+
+#lista-pantallas li button {
+    background-color: #fbc02d;
+    color: #333;
+}
+
+#lista-pantallas li button:hover {
+    background-color: #f9a825;
+    color: #000;
+}
+
+/* Formulario apartado parámetros */
+#apartado-parametros form,
+#apartado-pruebas form {
+    text-align: center;
+    width: 90%; 
+    max-width: 550px;  
+    margin: 20px auto;  
+    padding: 18px;  
+    background-color: #fafafa;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;  
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);  
+}
+
+#apartado-parametros label,
+#apartado-pruebas label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #444;
+    text-align: center; /* Puedes quitar esto si quieres centrar también los labels */
+}
+
+#apartado-parametros input[type="text"],
+#apartado-pruebas input[type="text"],
+#apartado-parametros select,
+#apartado-pruebas select {
+    width: 100%;
+    padding: 12px 14px;
+    margin-bottom: 20px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#apartado-parametros input[type="text"]:focus,
+#apartado-pruebas input[type="text"]:focus,
+#apartado-parametros select:focus,
+#apartado-pruebas select:focus {
+    border-color: #ffa726;
+    box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.2);
+    outline: none;
+}
+
+#apartado-parametros button,
+#apartado-pruebas button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    font-size: 1.05rem;
+    background-color: #ff9800;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#apartado-parametros button:hover,
+#apartado-pruebas button:hover {
+    background-color: #fb8c00;
+}
+#apartado-inicio {
+    display: block;
+    margin: 130px auto 0 auto;
+    max-width: 400px;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.10);
+    padding: 36px 28px 28px 28px;
+    text-align: center;
+}
+
+.resumen-info {
+    font-size: 1.8rem;
+    color: #333;
+    text-align: center;
+    margin-bottom: 18px;
+}
