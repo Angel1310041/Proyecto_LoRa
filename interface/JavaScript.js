@@ -56,74 +56,6 @@ function showContent(seccion) {
     }, 1000);
 }
 
-function fetchAndDisplayParameters() {
-    console.log("Solicitando parámetros actuales desde el servidor...");
-    fetch("/get-parametros")
-        .then(response => {
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            return response.json();
-        })
-        .then(data => {
-            const resumenId = document.getElementById('resumen-id');
-            const resumenZona = document.getElementById('resumen-zona');
-            const resumenTipo = document.getElementById('resumen-tipo-sensor');
-            
-
-            const tipoSensorMap = {
-                0: "0 - Gas LP",
-                1: "1 - Humo",
-                2: "2 - Movimiento",
-                3: "3 - Puerta",
-                4: "4 - Ventana",
-                5: "5 - Cortina",
-                6: "6 - Botón Físico/Pánico",
-                7: "7 - Palanca"
-            };
-
-            const tipoSensorText = tipoSensorMap[data.tipo] || `Tipo desconocido (${data.tipo})`;
-
-            if (resumenId && resumenZona && resumenTipo && resumenActualizacion && resumenSenal) {
-                resumenId.textContent = data.id;
-                resumenZona.textContent = data.zona;
-                resumenTipo.textContent = tipoSensorText;
-                resumenActualizacion.textContent = new Date().toLocaleString();
-
-                let zonaFormateada = String(data.zona).padStart(3, '0');
-                const senalConcatenada = `${String(data.id).padStart(4, '0')}${String(data.tipo)}${zonaFormateada}`;
-                resumenSenal.textContent = senalConcatenada;
-
-                console.log("Parámetros actualizados correctamente.");
-            } else {
-                console.error("No se encontraron todos los elementos de resumen.");
-            }
-        })
-        .catch(error => {
-            console.error("Error al obtener parámetros:", error);
-            const resumenActualizacion = document.getElementById('resumen-actualizacion');
-            if (resumenActualizacion) resumenActualizacion.textContent = "Error al cargar";
-        });
-}
-
-function enviarLora(senalConcatenada) {
-    fetch('/enviar-lora', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ senalConcatenada })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status) {
-            alert(`Mensaje "${senalConcatenada}" enviado correctamente por LoRa.`);
-        } else if (data.error) {
-            alert("Error: " + data.error);
-        }
-    })
-    .catch(error => {
-        alert("Error de comunicación con el servidor.");
-        console.error(error);
-    });
-}
-
 function mostrarPantallaLora(numero) {
     console.log("Solicitando mostrar pantalla en la tarjeta:", numero);
     fetch("/mostrar-pantalla", {
@@ -147,8 +79,69 @@ function mostrarPantallaLora(numero) {
     });
 }
 
+function fetchAndDisplayParameters() {
+    console.log("Solicitando parámetros actuales desde el servidor...");
+    fetch("/get-parametros")
+        .then(response => {
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            return response.json();
+        })
+        .then(data => {
+            const resumenId = document.getElementById('resumen-id');
+            const resumenZona = document.getElementById('resumen-zona');
+            const resumenTipo = document.getElementById('resumen-tipo-sensor');
+
+            const tipoSensorMap = {
+                0: "0 - Gas LP",
+                1: "1 - Humo",
+                2: "2 - Movimiento",
+                3: "3 - Puerta",
+                4: "4 - Ventana",
+                5: "5 - Cortina",
+                6: "6 - Botón Físico/Pánico",
+                7: "7 - Palanca"
+            };
+
+            const tipoSensorText = tipoSensorMap[data.tipo] || `Tipo desconocido (${data.tipo})`;
+
+            if (resumenId && resumenZona && resumenTipo) {
+                resumenId.textContent = data.id;
+                resumenZona.textContent = data.zona;
+                resumenTipo.textContent = tipoSensorText;
+                console.log("Parámetros actualizados correctamente.");
+            } else {
+                console.error("No se encontraron todos los elementos de resumen.");
+            }
+        })
+        .catch(error => {
+            console.error("Error al obtener parámetros:", error);
+        });
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
     fetchAndDisplayParameters();
+
+    // Validación en tiempo real para ID de alarma (máximo 4 dígitos numéricos)
+    const idAlarmaInput = document.getElementById('id-alarma');
+    if (idAlarmaInput) {
+        idAlarmaInput.addEventListener('input', function () {
+            this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);
+        });
+    }
+
+    // Validación en tiempo real para zona (máximo 3 dígitos numéricos, rango 1-510)
+    const zonaInput = document.getElementById('zona');
+    if (zonaInput) {
+        zonaInput.addEventListener('input', function () {
+            // Limita solo números y máximo 3 dígitos
+            this.value = this.value.replace(/[^0-9]/g, '').slice(0, 3);
+            // Además valida que no pase de 510
+            if (this.value !== '' && parseInt(this.value) > 510) {
+                this.value = '510';
+            }
+        });
+    }
 
     const form = document.getElementById('form-parametros');
     if (form) {
@@ -160,13 +153,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const tipoSensor = tipoSensorSelect.value.trim();
             const tipoSensorText = tipoSensorSelect.options[tipoSensorSelect.selectedIndex].text;
 
-            if (!/^\d{4}$/.test(idAlarma)) {
-                alert('El ID de la alarma debe ser un número de 4 dígitos.');
+            // Validaciones finales antes de enviar
+            if (idAlarma === '' || idAlarma.length > 4) {
+                alert("ID de alarma inválido. Debe tener hasta 4 dígitos numéricos.");
                 return;
             }
-
-            if (!/^\d{1,3}$/.test(zona)) {
-                alert('La zona debe ser un número de 1 a 3 dígitos.');
+            if (zona === '' || isNaN(zona) || parseInt(zona) < 1 || parseInt(zona) > 510) {
+                alert("Zona inválida. Debe ser un número entre 1 y 510.");
                 return;
             }
 
@@ -192,13 +185,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.getElementById('resumen-id').textContent = idAlarma;
                     document.getElementById('resumen-zona').textContent = zona;
                     document.getElementById('resumen-tipo-sensor').textContent = tipoSensorText;
-                    document.getElementById('resumen-actualizacion').textContent = new Date().toLocaleString();
 
-                    let zonaFormateada = zona.padStart(3, '0');
-                    const senalConcatenada = `${idAlarma}${tipoSensor}${zonaFormateada}`;
-                    document.getElementById('senal-registrada').textContent = senalConcatenada;
-
-                    console.log("Resumen actualizado con señal:", senalConcatenada);
+                    console.log("Resumen actualizado.");
                 } else if (data.error) {
                     alert("Error: " + data.error);
                 } else {

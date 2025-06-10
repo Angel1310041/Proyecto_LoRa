@@ -630,13 +630,19 @@ input[type="submit"]:hover {
   vertical-align: middle;
 }
 
-button img {
-  width: 10%;      /* % del ancho del botón */
-  height: 80%;    /* Mantiene la proporción */
-  max-height:54px; /* Límite máximo (opcional) */
-  margin-right: 35px;
-  vertical-align: middle;
-}
+    button img {
+        display: flex;
+        padding: 5%;
+        width: 10%;
+        max-height: 34%;
+        height: 5%;
+        transform: translateY(-5px); 
+        justify-content: center;
+        margin: 1% 5%;
+        
+    }
+
+
 
 /* Lista de pantallas */
 #lista-pantallas {
@@ -712,7 +718,7 @@ button img {
     width: 100%;
     padding: 12px;
     margin-top: 10px;
-    font-size: 1.05rem;
+    font-size: 3.05rem;
     background-color: #ff9800;
     color: #fff;
     border: none;
@@ -919,18 +925,23 @@ button img {
 
 #apartado-parametros button,
 #apartado-pruebas button {
-    display: block;
+    display: flex;
+    align-items: center;      /* Centrado vertical */
+    justify-content: flex-start; /* Alineación a la izquierda */
     width: 100%;
-    padding: 12px;
-    margin-top: 10px;
-    font-size: 1.05rem;
+    padding: 1px 8px;
+    margin: 1px 0;
+    font-size: 1.09rem;
     background-color: #ff9800;
     color: #fff;
     border: none;
-    border-radius: 8px;
+    border-radius: 9px;
     font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    text-align: left;        /* Alineación texto a la izquierda */
+
 }
 
 #apartado-parametros button:hover,

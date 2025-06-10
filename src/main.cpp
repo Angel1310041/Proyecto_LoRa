@@ -18,7 +18,12 @@ int imagenMostrada = 1;
 extern String mensajePendiente;
 extern bool enviarLoraPendiente;
 
-extern const unsigned char img1[], img2[], img3[], img4[], img5[], img6[], img7[], img8[], img9[], img10[];
+bool animacionIniciada = false;
+bool animacionInhabilitada = false;  // Nueva variable
+unsigned long tiempoInicioAnimacion = 0;
+int frameAnimacion = 0;
+
+extern const unsigned char img1[], img2[], img3[], img4[], img5[], img6[], img7[], img8[], img9[], img10[], img11[], img12[], img13[], img14[];
 
 void imprimir(String m, String c) {
   if (!debug) return;
@@ -29,6 +34,26 @@ void imprimir(String m, String c) {
   else if (c == "cyan") col = "\033[36m";
   Serial.print(col); Serial.println(m); Serial.print("\033[0m");
 }
+
+void animarAvance() {
+  if (animacionInhabilitada) return;
+
+  unsigned long ahora = millis();
+  if ((ahora - tiempoInicioAnimacion) >= 300) {
+    Heltec.display->clear();
+
+    switch (frameAnimacion % 3) {
+      case 0: Heltec.display->drawXbm(0, 0, 128, 64, img12); break;
+      case 1: Heltec.display->drawXbm(0, 0, 128, 64, img13); break;
+      case 2: Heltec.display->drawXbm(0, 0, 128, 64, img14); break;
+    }
+
+    Heltec.display->display();
+    frameAnimacion++;
+    tiempoInicioAnimacion = ahora;
+  }
+}
+
 
 void enviarPorLora(String mensaje) {
   LoRa.beginPacket();
@@ -51,6 +76,9 @@ void mostrarImagen(const unsigned char* imagen, int tipo = 2) {
 
 void mostrarInicio() {
   mostrarImagen(img1, 1);
+  tiempoUltimaImagen = millis();
+  animacionIniciada = false;
+  animacionInhabilitada = false; // Reanudar animación
 }
 
 void mostrarImagenPorTipoSensor(int tipoSensor) {
@@ -61,7 +89,7 @@ void mostrarImagenPorTipoSensor(int tipoSensor) {
     case 3:
     case 4: mostrarImagen(img8); break;
     case 5:
-    case 6: mostrarImagen(img2); break;
+    case 6: mostrarImagen(img11); break;
     case 7: mostrarImagen(img7); break;
     case 9: mostrarImagen(img2); break;
     default: break;
@@ -81,7 +109,7 @@ void mostrarPantallaPorNumero(int numero) {
     case 3: Heltec.display->drawXbm(0, 0, 128, 64, img8); break;
     case 4: Heltec.display->drawXbm(0, 0, 128, 64, img10); break;
     case 5: Heltec.display->drawXbm(0, 0, 128, 64, img9); break;
-    case 6: Heltec.display->drawXbm(0, 0, 128, 64, img2); break;
+    case 6: Heltec.display->drawXbm(0, 0, 128, 64, img11); break;
     case 7: Heltec.display->drawXbm(0, 0, 128, 64, img7); break;
     default:
       Heltec.display->drawString(0, 0, "Pantalla Invalida");
@@ -114,6 +142,7 @@ void manejarEntradas() {
     if (!modoprog && millis() - progStart >= 2000 && !esperandoLiberar) {
       modoprog = esperandoLiberar = true;
       entrarmodoprog();
+      animacionInhabilitada = true; 
       Heltec.display->clear();
       Heltec.display->drawXbm(30, 0, 70, 40, img4);
       Heltec.display->setTextAlignment(TEXT_ALIGN_LEFT);
@@ -143,6 +172,7 @@ void manejarEntradas() {
       mostrarImagenPorTipoSensor(activo.tipo);
       blinkLed();
       variableDetectada = true;
+      animacionInhabilitada = true; // Desactivar animación
       imprimir("Alerta RF enviada: " + String(mensajeRF), "rojo");
     } else if (!sensorActivo) {
       variableDetectada = false;
@@ -154,6 +184,7 @@ void manejarEntradas() {
         Transmisorrf.send(mensajeRF, 32);
         blinkLed();
         mostrarImagen(img2);
+        animacionInhabilitada = true; // Desactivar animación
         imprimir("Señal RF enviada con datos registrados: " + String(mensajeRF), "verde");
       } else {
         imprimir("Error: No hay datos registrados en EEPROM", "rojo");
@@ -162,9 +193,15 @@ void manejarEntradas() {
     botonAnterior = estadoBoton;
   }
 
-  if (!modoprog && imagenMostrada == 2 && millis() - tiempoUltimaImagen >= 10000) {
-    mostrarInicio();
-  }
+ if (!modoprog && imagenMostrada == 2 && millis() - tiempoUltimaImagen >= 10000) {
+  imagenMostrada = 1;
+  animacionIniciada = true;
+  animacionInhabilitada = false;  // ← AÑADE ESTA LÍNEA
+  frameAnimacion = 0;
+  tiempoInicioAnimacion = millis();
+}
+
+
 }
 
 void procesarEnvioLora() {
@@ -213,4 +250,14 @@ void setup() {
 void loop() {
   manejarEntradas();
   procesarEnvioLora();
+
+  if (!modoprog && !animacionInhabilitada && !animacionIniciada && imagenMostrada == 1 && millis() - tiempoUltimaImagen >= 10000) {
+    animacionIniciada = true;
+    frameAnimacion = 0;
+    tiempoInicioAnimacion = millis();
+  }
+
+  if (!animacionInhabilitada && animacionIniciada) {
+    animarAvance();
+  }
 }
